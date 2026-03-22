@@ -3,7 +3,7 @@ import {
     Button,
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import Logo from '../../../images/Logo.png'
+import Logo from '../../../Images/logo.png'
 import { NavLink } from "react-router-dom";
 import Search from "./__components/Search";
 
