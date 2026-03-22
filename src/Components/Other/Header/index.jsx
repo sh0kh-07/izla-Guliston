@@ -3,11 +3,15 @@ import {
     Button,
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import Logo from '../../../../public/Logo.png'
+import Logo from '../../../images/Logo.png'
 import { NavLink } from "react-router-dom";
+import Search from "./__components/Search";
 
 export default function Header() {
     const [openNav, setOpenNav] = useState(false);
+    const [openSearch, setOpenSearch] = useState(false);
+
+    const handleOpenSearch = () => setOpenSearch(!openSearch);
 
     useEffect(() => {
         window.addEventListener(
@@ -25,13 +29,14 @@ export default function Header() {
                     {/* Логотип слева */}
                     <NavLink to={'/'}>
                         <div className="flex items-center gap-2">
-                            <img className="w-[120px]" src={Logo} alt="" />
+                            <img className="w-[100px]" src={Logo} alt="" />
                         </div>
                     </NavLink>
                     <div className="flex items-center gap-3">
                         <Button
                             variant="text"
                             size="sm"
+                            onClick={handleOpenSearch}
                             className=" lg:inline-flex items-center gap-2 rounded-lg text-gray-700"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +46,7 @@ export default function Header() {
                         <NavLink to={'/contact'}>
                             <Button
                                 size="sm"
-                                className=" lg:flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md hover:shadow-lg"
+                                className=" lg:flex items-center gap-2 rounded-lg bg-blue-600  shadow-md hover:shadow-lg"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -51,6 +56,7 @@ export default function Header() {
                     </div>
                 </div>
             </Navbar>
+            <Search open={openSearch} handleOpen={handleOpenSearch} />
         </div>
     );
 }

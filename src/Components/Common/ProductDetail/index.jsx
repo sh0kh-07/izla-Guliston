@@ -1,45 +1,51 @@
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
-import { useGetProductsQuery } from "../../../store/services/product.api";
+import { useGetProductQuery } from "../../../store/services/product.api";
 import { useGetContactsQuery } from "../../../store/services/contact.api";
 import Loading from "../../Other/UI/Loadings/Loading";
-import { PhoneIcon, GlobeAltIcon, EnvelopeIcon, AtSymbolIcon } from "@heroicons/react/24/outline";
+import { PhoneIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
 
-export default function PageDetail() {
-    // 'categoryId' here is actually the third-level category id which contains the product
+export default function ProductDetail() {
     const { productId } = useParams();
-    const { data: productsData, isLoading: productLoading } = useGetProductsQuery({ categoryId: productId, page: 1 });
-    const product = productsData?.data?.records?.[0];
+    const { data: productResponse, isLoading: productLoading } = useGetProductQuery(productId);
+    const product = productResponse?.product;
     const { data: contactsData, isLoading: contactsLoading } = useGetContactsQuery(product?.id, { skip: !product?.id });
 
-    if (productLoading) return <Loading />;
+    if (productLoading) return (
+        <div className="container mx-auto pt-28">
+            <Loading />
+        </div>
+    );
 
     if (!product) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center pt-32">
                 <Typography variant="h4" color="blue-gray">Mahsulot topilmadi</Typography>
             </div>
         );
     }
 
-    if (contactsLoading) return <Loading />;
-
-    const contacts = (contactsData?.data?.records || []).filter(
-        (c) => c.key?.toLowerCase() === "phone"
+    if (contactsLoading) return (
+         <div className="container mx-auto pt-28">
+            <Loading />
+        </div>
     );
+
+    const contacts = contactsData?.data?.records || [];
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-32 pb-12">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                {/* Asosiy rasm */}
                 <div className="mb-8">
                     <Card className="overflow-hidden border-0 shadow-xl rounded-2xl">
                         <div className="relative h-[300px] sm:h-[400px] md:h-[500px]">
-                            <img
-                                src={`https://dev.ithubs.uz/search/${product.image}`}
-                                alt={product.title}
-                                className="w-full h-full object-cover"
-                            />
+                            {product.image && (
+                                <img
+                                    src={`https://dev.ithubs.uz/search/${product.image}`}
+                                    alt={product.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            )}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                             <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 text-white">
                                 <Typography variant="h1" className="font-bold text-2xl sm:text-4xl md:text-5xl mb-2">
@@ -50,9 +56,7 @@ export default function PageDetail() {
                     </Card>
                 </div>
 
-                {/* Asosiy ma'lumotlar grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Chap qism - Ma'lumotlar */}
                     <div className="lg:col-span-2 space-y-6">
                         <Card className="border-0 shadow-lg rounded-2xl">
                             <CardBody className="p-6 sm:p-8">
@@ -68,7 +72,6 @@ export default function PageDetail() {
                                         />
                                     </div>
                                 )}
-
                                 {product.address && (
                                     <div className="flex items-start gap-4 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,15 +101,11 @@ export default function PageDetail() {
                         </Card>
                     </div>
 
-                    {/* O'ng qism - Kontaktlar */}
                     <div className="space-y-6">
                         <Card className="border-0 shadow-lg sticky top-24 rounded-2xl overflow-hidden">
                             <div className="bg-blue-600 p-6 text-white text-center">
                                 <Typography variant="h5" className="font-bold">
                                     Kontaktlar
-                                </Typography>
-                                <Typography className="text-blue-100 text-sm opacity-80 mt-1">
-                                    Bog'lanish uchun quyidagi usullardan foydalaning
                                 </Typography>
                             </div>
                             <CardBody className="p-6 space-y-4">
@@ -126,7 +125,6 @@ export default function PageDetail() {
                                         </a>
                                     </div>
                                 ))}
-
                                 {contacts.length === 0 && (
                                     <div className="text-center py-8">
                                         <Typography className="text-gray-400 italic">
@@ -134,12 +132,6 @@ export default function PageDetail() {
                                         </Typography>
                                     </div>
                                 )}
-
-                                <div className="pt-4 border-t border-gray-100 mt-6 text-center">
-                                    <Typography className="text-[10px] text-gray-400 uppercase font-black tracking-[0.2em]">
-                                        Izla Guliston © 2026
-                                    </Typography>
-                                </div>
                             </CardBody>
                         </Card>
                     </div>

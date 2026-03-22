@@ -1,33 +1,47 @@
 import { useState } from "react";
 import { Card, CardBody, Typography, Button, Input, Textarea } from "@material-tailwind/react";
+import Swal from "sweetalert2";
+import { useCreateMessageMutation } from "../../../store/services/messages.api";
 
 export default function Contact() {
     const [formData, setFormData] = useState({
-        name: "",
+        full_name: "",
         phone: "",
-        message: ""
+        note: "",
     });
 
-    const [showPhone, setShowPhone] = useState(false);
+    const [createMessage, { isLoading }] = useCreateMessageMutation();
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Formani yuborish logikasi
-        console.log("Form yuborildi:", formData);
-        alert("Xabaringiz uchun rahmat! Tez orada siz bilan bog'lanamiz.");
-        // Formani tozalash
-        setFormData({
-            name: "",
-            phone: "",
-            message: ""
-        });
+        try {
+            await createMessage(formData).unwrap();
+            await Swal.fire({
+                icon: "success",
+                title: "Xabar yuborildi!",
+                text: "Xabaringiz uchun rahmat! Tez orada siz bilan bog'lanamiz.",
+                confirmButtonColor: "#3B82F6",
+                confirmButtonText: "Yopish",
+                timer: 3000,
+                timerProgressBar: true,
+            });
+            setFormData({ full_name: "", phone: "", note: "" });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Xatolik yuz berdi!",
+                text: error?.data?.message || "Iltimos qaytadan urinib ko'ring.",
+                confirmButtonColor: "#EF4444",
+                confirmButtonText: "Yopish",
+            });
+        }
     };
 
     return (
@@ -51,19 +65,17 @@ export default function Contact() {
 
                 {/* Asosiy kontakt form */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Contact Form */}
                     <Card className="border-0 shadow-lg col-span-2">
                         <CardBody className="p-4">
                             <Typography variant="h3" className="font-bold text-gray-800 mb-6">
                                 Xabar yuborish
                             </Typography>
-
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <Input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="full_name"
+                                        value={formData.full_name}
                                         onChange={handleChange}
                                         label="Ismingiz"
                                         className="w-full"
@@ -85,8 +97,8 @@ export default function Contact() {
 
                                 <div>
                                     <Textarea
-                                        name="message"
-                                        value={formData.message}
+                                        name="note"
+                                        value={formData.note}
                                         onChange={handleChange}
                                         label="Xabaringiz"
                                         className="w-full min-h-[150px]"
@@ -96,9 +108,10 @@ export default function Contact() {
 
                                 <Button
                                     type="submit"
+                                    disabled={isLoading}
                                     className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
                                 >
-                                    Xabarni yuborish
+                                    {isLoading ? "Yuborilmoqda..." : "Xabarni yuborish"}
                                 </Button>
                             </form>
                         </CardBody>

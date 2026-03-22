@@ -1,44 +1,13 @@
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
+import { useGetCategoriesQuery } from "../../../store/services/category.api";
+import Loading from "../../Other/UI/Loadings/Loading";
 
 export default function Home() {
-    const categories = [
-        {
-            id: 1,
-            name: "Restoranlar",
-            image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 2,
-            name: "To'yxonalar",
-            image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 3,
-            name: "Kafelar",
-            image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 5,
-            name: "Mehmonxonalar",
-            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 6,
-            name: "Go'zallik salonlari",
-            image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 7,
-            name: "Sport klublari",
-            image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        },
-        {
-            id: 8,
-            name: "Dorixonalar",
-            image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        }
-    ];
+    const { data: categoriesData, isLoading } = useGetCategoriesQuery(1);
+    const categories = categoriesData?.data?.records || [];
+
+    if (isLoading) return <Loading />;
 
     return (
         <div className="min-h-screen bg-gradient-to-br pt-24 pb-12">
@@ -46,15 +15,15 @@ export default function Home() {
                 {/* Kategoriyalar grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
                     {categories.map((category) => (
-                        <NavLink to={`/page`} key={category.id}>
+                        <NavLink to={`/category/${category.id}`} key={category.id}>
                             <Card
                                 className="group relative overflow-hidden cursor-pointer transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl border-0"
                             >
                                 {/* Background Image with Overlay */}
                                 <div className="absolute inset-0">
                                     <img
-                                        src={category.image}
-                                        alt={category.name}
+                                        src={`https://dev.ithubs.uz/search/${category.image}`}
+                                        alt={category.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
                                     {/* Gradient Overlay */}
@@ -66,7 +35,7 @@ export default function Home() {
                                         variant="h2"
                                         className="font-bold !text-white relative z-[1000] mb-2 text-shadow-lg text-[25px] xs:text-lg sm:text-2xl lg:text-4xl"
                                     >
-                                        {category.name}
+                                        {category.title}
                                     </Typography>
                                 </CardBody>
                             </Card>
