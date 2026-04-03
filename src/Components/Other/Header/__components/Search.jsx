@@ -152,9 +152,7 @@ export default function Search({ open, handleOpen }) {
                                                         <Typography variant="h6" color="blue-gray" className="font-bold text-sm leading-tight line-clamp-1">
                                                             {item.title}
                                                         </Typography>
-                                                        <Typography color="gray" className="text-xs line-clamp-1">
-                                                            {stripHtml(item.note) || "Batafsil ma'lumot"}
-                                                        </Typography>
+                                                     
                                                     </div>
                                                     <ArrowRight className="h-5 w-5 text-gray-400 pr-2" />
                                                 </button>

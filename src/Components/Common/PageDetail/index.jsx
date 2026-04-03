@@ -112,7 +112,7 @@ export default function PageDetail() {
                             <CardBody className="p-6 space-y-4">
                                 {contacts.map((contact) => (
                                     <div key={contact.id} className="group">
-                                        <Typography variant="small" className="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1 ml-1">
+                                        <Typography variant="small" className="text-black text-[15px] uppercase font-bold tracking-widest mb-1 ml-1">
                                             {contact.key}
                                         </Typography>
                                         <a

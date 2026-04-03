@@ -14,6 +14,7 @@ import { ImageCropper } from "../../ImageCropper";
 
 export function CategoryEditModal({ open, handleOpen, category }) {
     const [title, setTitle] = useState("");
+    const [position, setPosition] = useState("");
     const [image, setImage] = useState(null);
     const [tempImage, setTempImage] = useState(null);
     const [openCropper, setOpenCropper] = useState(false);
@@ -23,6 +24,7 @@ export function CategoryEditModal({ open, handleOpen, category }) {
     useEffect(() => {
         if (category) {
             setTitle(category.title);
+            setPosition(category.position || "");
             setImage(null);
             setPreview(category.image ? `https://dev.ithubs.uz/search/${category.image}` : null);
         }
@@ -50,6 +52,9 @@ export function CategoryEditModal({ open, handleOpen, category }) {
 
         const formData = new FormData();
         formData.append("title", title);
+        if (position !== "" && position !== null) {
+            formData.append("position", position);
+        }
         if (image) {
             formData.append("image", image);
         }
@@ -81,6 +86,18 @@ export function CategoryEditModal({ open, handleOpen, category }) {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             required
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <Typography variant="small" color="blue-gray" className="font-medium">
+                            Pozitsiya
+                        </Typography>
+                        <Input
+                            size="lg"
+                            type="number"
+                            placeholder="Masalan: 1"
+                            value={position}
+                            onChange={(e) => setPosition(e.target.value)}
                         />
                     </div>
                     <div className="flex flex-col gap-2">

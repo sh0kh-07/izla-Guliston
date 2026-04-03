@@ -14,6 +14,7 @@ import { ImageCropper } from "../../ImageCropper";
 
 export function CategoryCreateModal({ open, handleOpen, parentId }) {
     const [title, setTitle] = useState("");
+    const [position, setPosition] = useState("");
     const [image, setImage] = useState(null);
     const [tempImage, setTempImage] = useState(null);
     const [openCropper, setOpenCropper] = useState(false);
@@ -39,14 +40,19 @@ export function CategoryCreateModal({ open, handleOpen, parentId }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!title || !image) {
-            Alert("Iltimos, barcha maydonlarni to'ldiring", "error");
+        if (!title) {
+            Alert("Iltimos, kategoriya nomini kiriting", "error");
             return;
         }
 
         const formData = new FormData();
         formData.append("title", title);
-        formData.append("image", image);
+        if (position !== "") {
+            formData.append("position", position);
+        }
+        if (image) {
+            formData.append("image", image);
+        }
         if (parentId) {
             formData.append("parentId", parentId);
         }
@@ -55,6 +61,7 @@ export function CategoryCreateModal({ open, handleOpen, parentId }) {
             await createCategory(formData).unwrap();
             Alert("Kategoriya muvaffaqiyatli yaratildi", "success");
             setTitle("");
+            setPosition("");
             setImage(null);
             setPreview(null);
             handleOpen();
@@ -89,7 +96,19 @@ export function CategoryCreateModal({ open, handleOpen, parentId }) {
                     </div>
                     <div className="flex flex-col gap-2">
                         <Typography variant="small" color="blue-gray" className="font-medium">
-                            Kategoriya rasmi
+                            Pozitsiya
+                        </Typography>
+                        <Input
+                            size="lg"
+                            type="number"
+                            placeholder="Masalan: 1"
+                            value={position}
+                            onChange={(e) => setPosition(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <Typography variant="small" color="blue-gray" className="font-medium">
+                            Kategoriya rasmi (ixtiyoriy)
                         </Typography>
                         <input
                             type="file"

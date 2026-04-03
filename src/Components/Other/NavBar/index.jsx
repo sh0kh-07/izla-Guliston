@@ -40,7 +40,7 @@ export default function NavBar() {
                         onClick={goBack}
                         className="rounded-full"
                     >
-                        <ArrowLeft className="h-5 w-5" />
+                        <ArrowLeft className="h-10 w-10" />
                     </IconButton>
 
                     {/* Markazda - Bosh sahifa */}
@@ -50,7 +50,7 @@ export default function NavBar() {
                         onClick={goHome}
                         className="rounded-full bg-blue-500/10 hover:bg-blue-500/20"
                     >
-                        <Home className="h-5 w-5" />
+                        <Home className="h-8 w-8    " />
                     </IconButton>
 
                     {/* O'ng tomonda - Oldinga */}
@@ -59,7 +59,7 @@ export default function NavBar() {
                         onClick={goForward}
                         className="rounded-full"
                     >
-                        <ArrowRight className="h-5 w-5" />
+                        <ArrowRight className="h-10 w-10" />
                     </IconButton>
                 </div>
             </Navbar>

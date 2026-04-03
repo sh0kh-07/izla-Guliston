@@ -26,7 +26,7 @@ export default function ProductDetail() {
     }
 
     if (contactsLoading) return (
-         <div className="container mx-auto pt-28">
+        <div className="container mx-auto pt-28">
             <Loading />
         </div>
     );
@@ -34,9 +34,9 @@ export default function ProductDetail() {
     const contacts = contactsData?.data?.records || [];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-32 pb-12">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-[100px] pb-12">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                <div className="mb-8">
+                <div className="mb-2">
                     <Card className="overflow-hidden border-0 shadow-xl rounded-2xl">
                         <div className="relative h-[300px] sm:h-[400px] md:h-[500px]">
                             {product.image && (
@@ -56,51 +56,7 @@ export default function ProductDetail() {
                     </Card>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 space-y-6">
-                        <Card className="border-0 shadow-lg rounded-2xl">
-                            <CardBody className="p-6 sm:p-8">
-                                <Typography variant="h4" className="font-bold text-gray-800 mb-6">
-                                    Ma'lumotlar
-                                </Typography>
-
-                                {product.note && (
-                                    <div className="mb-8">
-                                        <div
-                                            className="prose prose-blue max-w-none text-gray-700 leading-relaxed"
-                                            dangerouslySetInnerHTML={{ __html: product.note }}
-                                        />
-                                    </div>
-                                )}
-                                {product.address && (
-                                    <div className="flex items-start gap-4 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <div>
-                                            <Typography variant="small" className="font-bold text-blue-900 uppercase tracking-wider mb-1">
-                                                Manzil
-                                            </Typography>
-                                            <Typography className="text-gray-800 font-medium">
-                                                {product.address}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {product.addressUrl && (
-                                    <Button
-                                        onClick={() => window.open(product.addressUrl, '_blank')}
-                                        className="mt-6 flex items-center justify-center gap-3 bg-gray-900 shadow-md hover:shadow-lg rounded-xl transition-all active:scale-95 w-full sm:w-auto"
-                                    >
-                                        <GlobeAltIcon className="h-5 w-5" /> Xaritada ko'rish
-                                    </Button>
-                                )}
-                            </CardBody>
-                        </Card>
-                    </div>
-
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
                     <div className="space-y-6">
                         <Card className="border-0 shadow-lg sticky top-24 rounded-2xl overflow-hidden">
                             <div className="bg-blue-600 p-6 text-white text-center">
@@ -111,7 +67,7 @@ export default function ProductDetail() {
                             <CardBody className="p-6 space-y-4">
                                 {contacts.map((contact) => (
                                     <div key={contact.id} className="group">
-                                        <Typography variant="small" className="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1 ml-1">
+                                        <Typography variant="small" className="text-black text-[15px] uppercase font-bold tracking-widest mb-1 ml-1">
                                             {contact.key}
                                         </Typography>
                                         <a
@@ -135,6 +91,52 @@ export default function ProductDetail() {
                             </CardBody>
                         </Card>
                     </div>
+                    <div className="lg:col-span-2 space-y-6">
+                        <Card className="border-0 shadow-lg rounded-2xl">
+                            <CardBody className="p-6 sm:p-8">
+                                {product.address && (
+                                    <div className="flex items-start gap-4 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <div>
+                                            <Typography variant="small" className="font-bold text-blue-900 uppercase tracking-wider mb-1">
+                                                Manzil
+                                            </Typography>
+                                            <Typography className="text-gray-800 font-medium">
+                                                {product.address}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {product.addressUrl && (
+                                    <Button
+                                        onClick={() => window.open(product.addressUrl, '_blank')}
+                                        className="mt-2 mb-2 flex items-center justify-center gap-3 bg-gray-900 shadow-md hover:shadow-lg rounded-xl transition-all active:scale-95 w-full sm:w-auto"
+                                    >
+                                        <GlobeAltIcon className="h-5 w-5" /> Xaritada ko'rish
+                                    </Button>
+                                )}
+                                <Typography variant="h4" className="font-bold text-gray-800 mb-">
+                                    Ma'lumotlar
+                                </Typography>
+
+                                {product.note && (
+                                    <div className="mb-8">
+                                        <div
+                                            className="prose prose-blue max-w-none text-gray-700 leading-relaxed"
+                                            dangerouslySetInnerHTML={{ __html: product.note }}
+                                        />
+                                    </div>
+                                )}
+
+                            </CardBody>
+                        </Card>
+                    </div>
+
+
                 </div>
             </div>
         </div>

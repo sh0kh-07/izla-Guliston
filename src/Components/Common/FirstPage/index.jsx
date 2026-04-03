@@ -31,13 +31,13 @@ export default function FirstPage() {
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
                                     {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-[#2626267c] group-hover:opacity-90 group-hover:bg-[#0000000f] transition-opacity duration-500" />
+                                    <div className="absolute inset-0 bg-[#2626267c] group-hover:opacity-90 group-hover:bg-[#0000005b] transition-opacity duration-500" />
                                 </div>
                                 {/* Content - с адаптивной высотой */}
                                 <CardBody className="relative z-10 text-center p-4 sm:p-8 min-h-[150px] sm:min-h-[280px] flex flex-col items-center justify-center">
                                     <Typography
                                         variant="h2"
-                                        className="font-bold !text-white relative z-[1000] mb-2 text-shadow-lg text-lg sm:text-2xl lg:text-4xl"
+                                        className="font-bold !text-white relative z-[1000] mb-2 text-shadow-lg text-[35px] sm:text-2xl lg:text-4xl"
                                     >
                                         {category.title}
                                     </Typography>
