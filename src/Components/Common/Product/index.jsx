@@ -61,7 +61,7 @@ export default function ProductList() {
                     {/* IMAGE TOP */}
                     <div className="relative w-full h-[400px] sm:h-[500px]">
                         <img
-                            src={`https://dev.ithubs.uz/search/${product.image}`}
+                            src={`https://dev.izlaguliston.uz/${product.image}`}
                             alt={product.title}
                             className="w-full h-full object-cover"
                         />

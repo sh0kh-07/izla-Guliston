@@ -36,7 +36,7 @@ export default function PageDetail() {
                     <Card className="overflow-hidden border-0 shadow-xl rounded-2xl">
                         <div className="relative h-[300px] sm:h-[400px] md:h-[500px]">
                             <img
-                                src={`https://dev.ithubs.uz/search/${product.image}`}
+                                src={`https://dev.izlaguliston.uz/${product.image}`}
                                 alt={product.title}
                                 className="w-full h-full object-cover"
                             />

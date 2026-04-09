@@ -26,7 +26,7 @@ export function CategoryEditModal({ open, handleOpen, category }) {
             setTitle(category.title);
             setPosition(category.position || "");
             setImage(null);
-            setPreview(category.image ? `https://dev.ithubs.uz/search/${category.image}` : null);
+            setPreview(category.image ? `https://dev.izlaguliston.uz/${category.image}` : null);
         }
     }, [category]);
 

@@ -39,7 +39,7 @@ export default function Page() {
                             {product.image ? (
                                 <div className="relative h-[200px] sm:h-[300px] md:h-[400px]">
                                     <img
-                                        src={`https://dev.ithubs.uz/search/${product.image}`}
+                                        src={`https://dev.izlaguliston.uz/${product.image}`}
                                         alt={product.title}
                                         className="w-full h-full object-cover"
                                     />
@@ -161,7 +161,7 @@ export default function Page() {
                                     {item.image ? (
                                         <>
                                             <img
-                                                src={`https://dev.ithubs.uz/search/${item.image}`}
+                                                src={`https://dev.izlaguliston.uz/${item.image}`}
                                                 alt={item.title}
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                             />

@@ -26,7 +26,7 @@ export default function FirstPage() {
                                 {/* Background Image with Overlay */}
                                 <div className="absolute inset-0">
                                     <img
-                                        src={`https://dev.ithubs.uz/search/${category.image}`}
+                                        src={`/${category.image}`}
                                         alt={category.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     />

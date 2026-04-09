@@ -143,7 +143,7 @@ export default function Search({ open, handleOpen }) {
                                                 >
                                                     <div className="h-12 w-12 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
                                                         {item.image ? (
-                                                            <img src={`https://dev.ithubs.uz/search/${item.image}`} alt="" className="h-full w-full object-cover rounded-xl" />
+                                                            <img src={`https://dev.izlaguliston.uz/${item.image}`} alt="" className="h-full w-full object-cover rounded-xl" />
                                                         ) : (
                                                             <Package className="h-6 w-6 text-blue-500" />
                                                         )}

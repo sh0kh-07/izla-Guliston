@@ -101,7 +101,7 @@ export default function AdminCategoryManager() {
                             <CardHeader className="relative h-48 m-0 rounded-none shadow-none bg-gray-50 flex items-center justify-center overflow-hidden">
                                 {category.image ? (
                                     <img
-                                        src={`https://dev.ithubs.uz/search/${category.image}`}
+                                        src={`https://dev.izlaguliston.uz/${category.image}`}
                                         alt={category.title}
                                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     />

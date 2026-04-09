@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 /* ===============================
    CONFIG
 ================================ */
-export const BASE_URL = "https://dev.ithubs.uz/search";
+export const BASE_URL = "https://dev.izlaguliston.uz";
 
 export const $api = axios.create({
     baseURL: `${BASE_URL}/api`,

@@ -29,7 +29,7 @@ export default function ProductEdit() {
     });
     const [tempImage, setTempImage] = useState(null);
     const [openCropper, setOpenCropper] = useState(false);
-    const [preview, setPreview] = useState(state?.product?.image ? `https://dev.ithubs.uz/search/${state?.product?.image}` : null);
+    const [preview, setPreview] = useState(state?.product?.image ? `https://dev.izlaguliston.uz/${state?.product?.image}` : null);
 
     // If I don't have getProductById, this is tricky. 
     // I'll check if I can find it in the list if I had categoryId.
