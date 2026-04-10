@@ -62,7 +62,7 @@ export default function ProductCreate() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.title || !formData.address || !formData.image) {
+        if (!formData.title || !formData.image) {
             Alert("Iltimos, barcha majburiy maydonlarni to'ldiring", "error");
             return;
         }
@@ -112,7 +112,6 @@ export default function ProductCreate() {
                                 placeholder="Toshkent, Chilonzor tumani..."
                                 value={formData.address}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
@@ -123,7 +122,6 @@ export default function ProductCreate() {
                             placeholder="https://yandex.uz/maps/..."
                             value={formData.addressUrl}
                             onChange={handleChange}
-                            required
                         />
 
                         <div className="flex flex-col gap-2">

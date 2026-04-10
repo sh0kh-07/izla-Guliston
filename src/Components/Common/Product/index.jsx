@@ -32,7 +32,7 @@ export default function ProductList() {
 
     const products = productsData?.data?.records || [];
     const hasProduct = products.length > 0;
-    const product = products[0]; 
+    const product = products[0];
 
     return (
         <div className="">
@@ -76,20 +76,22 @@ export default function ProductList() {
                     {/* CARD CONTENT */}
                     <CardBody className="p-8 space-y-6">
                         {/* ADDRESS */}
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-blue-50 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-600">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                </svg>
+                        {product.address && (
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-blue-50 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-600">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-xs uppercase text-gray-400 font-semibold">
+                                        Manzil
+                                    </p>
+                                    <p className="text-gray-800 font-medium">{product.address}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-xs uppercase text-gray-400 font-semibold">
-                                    Manzil
-                                </p>
-                                <p className="text-gray-800 font-medium">{product.address}</p>
-                            </div>
-                        </div>
+                        )}
 
                         {/* LOCATION */}
                         {product.addressUrl && (
