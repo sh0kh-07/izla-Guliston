@@ -6,13 +6,40 @@ import { useGetContactsQuery } from "../../../store/services/contact.api";
 import Loading from "../../Other/UI/Loadings/Loading";
 import { PhoneIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
 import EmptyData from "../../Other/UI/NoData/EmptyData";
+import React, { useState, useEffect } from "react";
 
 export default function Page() {
     const { categoryId } = useParams();
-    const { data: subCategoriesData, isLoading: subLoading } = useGetSubCategoriesQuery({ parentId: categoryId, page: 1 });
+    const [page, setPage] = useState(1);
+    const [allSubCategories, setAllSubCategories] = useState([]);
+
+    // Reset state when categoryId changes
+    React.useEffect(() => {
+        setAllSubCategories([]);
+        setPage(1);
+    }, [categoryId]);
+
+    const { data: subCategoriesData, isLoading: subLoading } = useGetSubCategoriesQuery({ parentId: categoryId, page });
     const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({ categoryId, page: 1 });
 
-    const subCategories = subCategoriesData?.data?.records || [];
+    // Accumulate sub-categories when data is fetched
+    React.useEffect(() => {
+        const newData = subCategoriesData?.data?.records;
+        if (newData) {
+            if (page === 1) {
+                setAllSubCategories(newData);
+            } else {
+                setAllSubCategories(prev => {
+                    const existingIds = new Set(prev.map(item => item.id));
+                    const uniqueNewData = newData.filter(item => !existingIds.has(item.id));
+                    return [...prev, ...uniqueNewData];
+                });
+            }
+        }
+    }, [subCategoriesData, page]);
+
+    const subCategories = allSubCategories;
+    const pagination = subCategoriesData?.data?.pagination;
     const products = productsData?.data?.records || [];
     const product = products[0];
 
@@ -183,6 +210,16 @@ export default function Page() {
                         </NavLink>
                     ))}
                 </div>
+                {pagination && page < pagination.total_pages && (
+                    <div className="flex justify-center mt-12">
+                        <Button
+                            className="bg-blue-600 shadow-md hover:shadow-lg rounded-xl transition-all active:scale-95 px-10"
+                            onClick={() => setPage(prev => prev + 1)}
+                        >
+                            Yana yuklash
+                        </Button>
+                    </div>
+                )}
                 {subCategories.length === 0 && hasProducts === false && (
                     <EmptyData text={'Hozircha hech narsa topilmadi'} />
                 )}

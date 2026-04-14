@@ -59,7 +59,7 @@ export default function ProductEdit() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.title || !formData.address) {
+        if (!formData.title) {
             Alert("Iltimos, barcha majburiy maydonlarni to'ldiring", "error");
             return;
         }
@@ -81,7 +81,7 @@ export default function ProductEdit() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className=" mx-auto">
             <div className="flex items-center gap-4 mb-8">
                 <Typography variant="h3" color="blue-gray" className="font-bold">
                     Mahsulotni tahrirlash
@@ -108,7 +108,6 @@ export default function ProductEdit() {
                                 placeholder="Toshkent, Chilonzor tumani..."
                                 value={formData.address}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
@@ -119,7 +118,6 @@ export default function ProductEdit() {
                             placeholder="https://yandex.uz/maps/..."
                             value={formData.addressUrl}
                             onChange={handleChange}
-                            required
                         />
 
                         <div className="flex flex-col gap-2">

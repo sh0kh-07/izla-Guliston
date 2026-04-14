@@ -20,6 +20,13 @@ export default function AdminCategoryManager() {
     const { parentId } = useParams();
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
+    const [allCategories, setAllCategories] = useState([]);
+
+    // Reset state when parentId changes
+    React.useEffect(() => {
+        setAllCategories([]);
+        setPage(1);
+    }, [parentId]);
 
     // Fetch categories (root if no parentId, otherwise sub-categories)
     const { data: rootData, isLoading: isRootLoading } = useGetCategoriesQuery(page, { skip: !!parentId });
@@ -27,6 +34,22 @@ export default function AdminCategoryManager() {
 
     // Check if current category has products
     const { data: productsData, isLoading: isProductsLoading } = useGetProductsQuery({ categoryId: parentId, page: 1 }, { skip: !parentId });
+
+    // Accumulate categories when data is fetched
+    React.useEffect(() => {
+        const newData = parentId ? subData?.data?.records : rootData?.data?.records;
+        if (newData) {
+            if (page === 1) {
+                setAllCategories(newData);
+            } else {
+                setAllCategories(prev => {
+                    const existingIds = new Set(prev.map(item => item.id));
+                    const uniqueNewData = newData.filter(item => !existingIds.has(item.id));
+                    return [...prev, ...uniqueNewData];
+                });
+            }
+        }
+    }, [rootData, subData, page, parentId]);
 
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
@@ -43,8 +66,8 @@ export default function AdminCategoryManager() {
         setOpenDelete(!openDelete);
     };
 
-    const categories = parentId ? (subData?.data?.records || []) : (rootData?.data?.records || []);
-    const meta = parentId ? subData?.data?.meta : rootData?.data?.meta;
+    const categories = allCategories;
+    const pagination = parentId ? subData?.data?.pagination : rootData?.data?.pagination;
     const products = productsData?.data?.records || [];
 
     const hasProducts = products.length > 0;
@@ -157,26 +180,13 @@ export default function AdminCategoryManager() {
             )}
 
             {/* Pagination */}
-            {meta && meta.lastPage > 1 && (
-                <div className="flex justify-center mt-12 gap-2">
+            {pagination && page < pagination.total_pages && (
+                <div className="flex justify-center mt-12">
                     <Button
-                        variant="text"
-                        disabled={page === 1}
-                        onClick={() => setPage(page - 1)}
+                        className="bg-blue-600 shadow-md hover:shadow-lg rounded-xl transition-all active:scale-95 px-10"
+                        onClick={() => setPage(prev => prev + 1)}
                     >
-                        Oldingi
-                    </Button>
-                    <div className="flex items-center gap-2">
-                        <Typography color="gray" className="font-medium">
-                            Sahifa {page} / {meta.lastPage}
-                        </Typography>
-                    </div>
-                    <Button
-                        variant="text"
-                        disabled={page === meta.lastPage}
-                        onClick={() => setPage(page + 1)}
-                    >
-                        Keyingi
+                        Yana yuklash
                     </Button>
                 </div>
             )}
