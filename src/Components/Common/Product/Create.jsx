@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
     Button,
     Card,
     CardBody,
     Input,
-    Textarea,
     Typography,
 } from "@material-tailwind/react";
 import { useCreateProductMutation, useGetProductsQuery } from "../../../store/services/product.api";
@@ -16,12 +15,11 @@ import { ImageCropper } from "../ImageCropper";
 
 export default function ProductCreate() {
     const { categoryId } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [createProduct, { isLoading }] = useCreateProductMutation();
     const { data: productsData, isLoading: isProductsLoading } = useGetProductsQuery({ categoryId, page: 1 });
 
-    // Safety redirect: only one product allowed per category
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isProductsLoading && productsData?.data?.records?.length > 0) {
             navigate(`/admin/products/${categoryId}`, { replace: true });
         }
@@ -37,6 +35,27 @@ export default function ProductCreate() {
     const [tempImage, setTempImage] = useState(null);
     const [openCropper, setOpenCropper] = useState(false);
     const [preview, setPreview] = useState(null);
+
+    // ========== KENGAYTIRILGAN QUILL MODULI ==========
+    const modules = useMemo(() => ({
+        toolbar: {
+            container: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],  // <--- chap, markaz, o‘ng, keng (justify)
+                ['link', 'image', 'video'],
+                ['blockquote', 'code-block'],
+                ['clean']  // formatni tozalash
+            ],
+            handlers: {
+                // Rasm yuklash handleri (agar server endpoint bo‘lsa)
+                // image: () => { ... }
+            }
+        }
+    }), []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -63,7 +82,7 @@ export default function ProductCreate() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.title || !formData.image) {
-            Alert("Iltimos, barcha majburiy maydonlarni to'ldiring", "error");
+            Alert("Iltimos, barcha majburiy maydonlarni to‘ldiring", "error");
             return;
         }
 
@@ -85,20 +104,20 @@ export default function ProductCreate() {
     };
 
     return (
-        <div className=" mx-auto">
+        <div className="mx-auto">
             <div className="flex items-center gap-4 mb-8">
                 <Typography variant="h3" color="blue-gray" className="font-bold">
-                    Yangi mahsulot qo'shish
+                    Yangi mahsulot qo‘shish
                 </Typography>
             </div>
 
             <Card className="shadow-lg border border-gray-100 rounded-2xl">
-                <CardBody p={8}>
+                <CardBody className="p-8">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <Input
                                 name="title"
-                                label="Mahsulot sarlavhasi *"
+                                label="Mahsulot nomi *"
                                 size="lg"
                                 placeholder="Masalan: Starbucks Coffee"
                                 value={formData.title}
@@ -109,7 +128,7 @@ export default function ProductCreate() {
                                 name="address"
                                 label="Manzil *"
                                 size="lg"
-                                placeholder="Toshkent, Chilonzor tumani..."
+                                placeholder="Toshkent, Chilonzor tumani ..."
                                 value={formData.address}
                                 onChange={handleChange}
                             />
@@ -117,7 +136,7 @@ export default function ProductCreate() {
 
                         <Input
                             name="addressUrl"
-                            label="Xarita manzili (URL) *"
+                            label="Xarita URL manzili *"
                             size="lg"
                             placeholder="https://yandex.uz/maps/..."
                             value={formData.addressUrl}
@@ -141,9 +160,9 @@ export default function ProductCreate() {
                             >
                                 {preview ? (
                                     <div className="relative inline-block">
-                                        <img src={preview} alt="Preview" className="h-48 rounded-xl shadow-lg" />
+                                        <img src={preview} alt="Oldindan ko‘rish" className="h-48 rounded-xl shadow-lg" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl text-white font-bold backdrop-blur-[2px]">
-                                            O'zgartirish
+                                            O‘zgartirish
                                         </div>
                                     </div>
                                 ) : (
@@ -154,24 +173,26 @@ export default function ProductCreate() {
                                             </svg>
                                         </div>
                                         <Typography variant="small" color="blue-gray" className="font-bold">
-                                            Rasm yuklash учун bosing
+                                            Rasm yuklash uchun bosing
                                         </Typography>
                                     </div>
                                 )}
                             </label>
                         </div>
 
+                        {/* KENGAYTIRILGAN RICH TEXT MUHARRIRI */}
                         <div className="flex flex-col gap-2">
                             <Typography variant="small" color="blue-gray" className="font-bold">
-                                Batafsil ma'lumot (Rich Text)
+                                Batafsil tavsif (boy matn)
                             </Typography>
-                            <div className="h-[300px] mb-12">
+                            <div style={{ height: "350px", marginBottom: "70px" }}>
                                 <ReactQuill
                                     theme="snow"
                                     value={formData.note}
                                     onChange={(value) => setFormData(prev => ({ ...prev, note: value }))}
-                                    style={{ height: '250px' }}
-                                    placeholder="Mahsulot haqida batafsil ma'lumot kiriting..."
+                                    modules={modules}
+                                    style={{ height: "100%" }}
+                                    placeholder="Mahsulot haqida to‘liq ma’lumot kiriting. Matnni formatlang, rasm va video qo‘shing..."
                                 />
                             </div>
                         </div>

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
     Button,
     Card,
     CardBody,
     Input,
-    Textarea,
     Typography,
 } from "@material-tailwind/react";
 import { useUpdateProductMutation, useGetProductsQuery } from "../../../store/services/product.api";
@@ -29,11 +28,30 @@ export default function ProductEdit() {
     });
     const [tempImage, setTempImage] = useState(null);
     const [openCropper, setOpenCropper] = useState(false);
-    const [preview, setPreview] = useState(state?.product?.image ? `https://dev.izlaguliston.uz/${state?.product?.image}` : null);
+    const [preview, setPreview] = useState(
+        state?.product?.image ? `https://dev.izlaguliston.uz/${state?.product?.image}` : null
+    );
 
-    // If I don't have getProductById, this is tricky. 
-    // I'll check if I can find it in the list if I had categoryId.
-    // But let's assume getById exists or I'll just keep it simple.
+    // ========== KENGAYTIRILGAN QUILL MODULI ==========
+    const modules = useMemo(() => ({
+        toolbar: {
+            container: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],  // chap, markaz, o‘ng, eni bo‘yicha
+                ['link', 'image', 'video'],
+                ['blockquote', 'code-block'],
+                ['clean']
+            ],
+            handlers: {
+                // Rasm yuklash uchun handler (agar server endpoint kerak bo‘lsa)
+                // image: () => { ... }
+            }
+        }
+    }), []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -60,7 +78,7 @@ export default function ProductEdit() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.title) {
-            Alert("Iltimos, barcha majburiy maydonlarni to'ldiring", "error");
+            Alert("Iltimos, barcha majburiy maydonlarni to‘ldiring", "error");
             return;
         }
 
@@ -81,7 +99,7 @@ export default function ProductEdit() {
     };
 
     return (
-        <div className=" mx-auto">
+        <div className="mx-auto">
             <div className="flex items-center gap-4 mb-8">
                 <Typography variant="h3" color="blue-gray" className="font-bold">
                     Mahsulotni tahrirlash
@@ -89,12 +107,12 @@ export default function ProductEdit() {
             </div>
 
             <Card className="shadow-lg border border-gray-100 rounded-2xl">
-                <CardBody p={8}>
+                <CardBody className="p-8">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <Input
                                 name="title"
-                                label="Mahsulot sarlavhasi *"
+                                label="Mahsulot nomi *"
                                 size="lg"
                                 placeholder="Masalan: Starbucks Coffee"
                                 value={formData.title}
@@ -113,7 +131,7 @@ export default function ProductEdit() {
 
                         <Input
                             name="addressUrl"
-                            label="Xarita manzili (URL) *"
+                            label="Xarita URL manzili *"
                             size="lg"
                             placeholder="https://yandex.uz/maps/..."
                             value={formData.addressUrl}
@@ -122,7 +140,7 @@ export default function ProductEdit() {
 
                         <div className="flex flex-col gap-2">
                             <Typography variant="small" color="blue-gray" className="font-bold">
-                                Mahsulot rasmi (O'zgartirish uchun tanlang)
+                                Mahsulot rasmi (o‘zgartirish uchun tanlang)
                             </Typography>
                             <input
                                 type="file"
@@ -137,9 +155,9 @@ export default function ProductEdit() {
                             >
                                 {preview ? (
                                     <div className="relative inline-block">
-                                        <img src={preview} alt="Preview" className="h-48 rounded-xl shadow-lg" />
+                                        <img src={preview} alt="Oldindan ko‘rish" className="h-48 rounded-xl shadow-lg" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl text-white font-bold backdrop-blur-[2px]">
-                                            O'zgartirish
+                                            O‘zgartirish
                                         </div>
                                     </div>
                                 ) : (
@@ -150,24 +168,26 @@ export default function ProductEdit() {
                                             </svg>
                                         </div>
                                         <Typography variant="small" color="blue-gray" className="font-bold">
-                                            Rasm yuklash учун bosing
+                                            Rasm yuklash uchun bosing
                                         </Typography>
                                     </div>
                                 )}
                             </label>
                         </div>
 
+                        {/* KENGAYTIRILGAN RICH TEXT MUHARRIRI */}
                         <div className="flex flex-col gap-2">
                             <Typography variant="small" color="blue-gray" className="font-bold">
-                                Batafsil ma'lumot (Rich Text)
+                                Batafsil tavsif (boy matn)
                             </Typography>
-                            <div className="h-[300px] mb-12">
+                            <div style={{ height: "350px", marginBottom: "70px" }}>
                                 <ReactQuill
                                     theme="snow"
                                     value={formData.note}
                                     onChange={(value) => setFormData(prev => ({ ...prev, note: value }))}
-                                    style={{ height: '250px' }}
-                                    placeholder="Mahsulot haqida batafsil ma'lumot..."
+                                    modules={modules}
+                                    style={{ height: "100%" }}
+                                    placeholder="Mahsulot haqida to‘liq ma’lumot kiriting. Matnni formatlang, rasm va video qo‘shing..."
                                 />
                             </div>
                         </div>
